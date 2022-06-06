@@ -5,7 +5,7 @@ from marshmallow import fields, post_load
 from cryptowatch.utils import log
 from cryptowatch.resources.allowance import AllowanceSchema
 from cryptowatch.resources.assets import AssetSchema
-from cryptowatch.resources.base import BaseSchema
+from cryptowatch.resources.base import BaseResource, BaseSchema
 from cryptowatch.resources.markets import MarketSchema
 
 
@@ -45,24 +45,6 @@ class Instruments:
         return instruments_obj
 
 
-class InstrumentResource:
-    def __init__(
-        self, id, symbol, route, base, quote, futuresContractPeriod=None, markets=[]
-    ):
-        self.id = id
-        self.symbol = symbol
-        self.route = route
-        self.base = base
-        self.quote = quote
-        if futuresContractPeriod:
-            self.futures_contract_period = futuresContractPeriod
-        if markets:
-            self.markets = markets
-
-    def __repr__(self):
-        return "<Instrument({self.symbol})>".format(self=self)
-
-
 class InstrumentSchema(BaseSchema):
     id = fields.Integer()
     symbol = fields.Str()
@@ -73,8 +55,8 @@ class InstrumentSchema(BaseSchema):
     markets = fields.Nested(MarketSchema, many=True)
 
     @post_load
-    def make_instruments(self, data, **kwargs):
-        return InstrumentResource(**data)
+    def make_resource(self, data, **kwargs):
+        return BaseResource(_name="Instrument", _display_key="symbol", **data)
 
 
 class InstrumentAPIResponseSchema(BaseSchema):

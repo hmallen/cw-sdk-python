@@ -4,7 +4,7 @@ from marshmallow import fields, post_load
 
 from cryptowatch.utils import log
 from cryptowatch.resources.allowance import AllowanceSchema
-from cryptowatch.resources.base import BaseSchema
+from cryptowatch.resources.base import BaseResource, BaseSchema
 
 
 class Exchanges:
@@ -42,21 +42,6 @@ class Exchanges:
         return exchanges_obj
 
 
-class ExchangeResource:
-    def __init__(self, id, symbol, name, active, route=None, routes=[]):
-        self.id = id
-        self.symbol = symbol
-        self.name = name
-        self.active = active
-        if route:
-            self.route = route
-        if routes:
-            self.routes = routes
-
-    def __repr__(self):
-        return "<Exchange({self.name})>".format(self=self)
-
-
 class ExchangeSchema(BaseSchema):
     id = fields.Integer()
     symbol = fields.Str()
@@ -66,8 +51,8 @@ class ExchangeSchema(BaseSchema):
     routes = fields.Dict(keys=fields.Str(), values=fields.Url())
 
     @post_load
-    def make_exchange(self, data, **kwargs):
-        return ExchangeResource(**data)
+    def make_resource(self, data, **kwargs):
+        return BaseResource(_name="Exchange", _display_key="name", **data)
 
 
 class ExchangeAPIResponseSchema(BaseSchema):

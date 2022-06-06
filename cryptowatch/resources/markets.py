@@ -4,7 +4,7 @@ from marshmallow import fields, post_load
 
 from cryptowatch.utils import log, translate_periods
 from cryptowatch.resources.allowance import AllowanceSchema
-from cryptowatch.resources.base import BaseSchema
+from cryptowatch.resources.base import BaseResource, BaseSchema
 
 
 class Markets:
@@ -77,21 +77,6 @@ class Markets:
         return markets_obj
 
 
-class MarketResource:
-    def __init__(self, id, exchange, pair, active, route=None, routes=[]):
-        self.id = id
-        self.exchange = exchange
-        self.pair = pair
-        self.active = active
-        if route:
-            self.route = route
-        if routes:
-            self.routes = routes
-
-    def __repr__(self):
-        return "<Market({self.exchange}:{self.pair})>".format(self=self)
-
-
 class MarketSchema(BaseSchema):
 
     id = fields.Integer()
@@ -102,18 +87,8 @@ class MarketSchema(BaseSchema):
     routes = fields.Dict(keys=fields.Str(), values=fields.Url())
 
     @post_load
-    def make_market(self, data, **kwargs):
-        return MarketResource(**data)
-
-
-class MarketSummaryResource:
-    def __init__(self, price, volume, volumeQuote):
-        self.price = price
-        self.volume = volume
-        self.volume_quote = volumeQuote
-
-    def __repr__(self):
-        return "<MarketSummary({self.price})>".format(self=self)
+    def make_resource(self, data, **kwargs):
+        return BaseResource(_name="Market", _display_key="id", **data)
 
 
 class MarketSummaryPriceSchema(BaseSchema):
@@ -147,8 +122,8 @@ class MarketSummarySchema(BaseSchema):
     volumeQuote = fields.Float()
 
     @post_load
-    def make_market_summary(self, data, **kwargs):
-        return MarketSummaryResource(**data)
+    def make_resource(self, data, **kwargs):
+        return BaseResource(_name="MarketSummary", _display_key="price", **data)
 
 
 class LiquidityLevelSchema(BaseSchema):
@@ -156,14 +131,8 @@ class LiquidityLevelSchema(BaseSchema):
     quote = fields.Dict(keys=fields.Str(), values=fields.Str())
 
     @post_load
-    def make_liquidity_level(self, data, **kwargs):
-        return LiquidityLevelResource(**data)
-
-
-class LiquidityLevelResource:
-    def __init__(self, quote, base):
-        self.quote = quote
-        self.base = base
+    def make_resource(self, data, **kwargs):
+        return BaseResource(_name="LiquidityLevel", **data)
 
 
 class LiquiditySchema(BaseSchema):
@@ -171,14 +140,8 @@ class LiquiditySchema(BaseSchema):
     ask = fields.Nested(LiquidityLevelSchema)
 
     @post_load
-    def make_liquidity(self, data, **kwargs):
-        return LiquidityResource(**data)
-
-
-class LiquidityResource:
-    def __init__(self, bid, ask):
-        self.bid = bid
-        self.ask = ask
+    def make_resource(self, data, **kwargs):
+        return BaseResource(_name="Liquidity", **data)
 
 
 class MarketLiquidityAPIResponseSchema(BaseSchema):

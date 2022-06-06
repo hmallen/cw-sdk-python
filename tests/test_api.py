@@ -26,7 +26,7 @@ def test_assets_endpoints():
     assets = cryptowatch.assets.list()
     assert hasattr(assets, "assets")
     assert type(assets.assets) == type(list())
-    assert type(assets.assets[0]) == cryptowatch.resources.assets.AssetResource
+    assert type(assets.assets[0]) == cryptowatch.resources.assets.BaseResource
     # This should raise an APIResourceNotFoundError Exception
     with pytest.raises(cryptowatch.errors.APIResourceNotFoundError):
         cryptowatch.assets.get("shitcointhatdoesntexists")
@@ -43,8 +43,8 @@ def test_instruments_endpoints():
     assert hasattr(market.instrument, "symbol")
     assert hasattr(market.instrument, "route")
     assert hasattr(market.instrument, "markets")
-    assert type(market.instrument.base) == cryptowatch.resources.assets.AssetResource
-    assert type(market.instrument.quote) == cryptowatch.resources.assets.AssetResource
+    assert type(market.instrument.base) == cryptowatch.resources.assets.BaseResource
+    assert type(market.instrument.quote) == cryptowatch.resources.assets.BaseResource
     assert type(market.instrument.markets) == type(list())
     # test market instrument values
     assert market.instrument.id == 9
@@ -58,7 +58,7 @@ def test_instruments_endpoints():
     assert type(instruments.instruments) == type(list())
     assert (
         type(instruments.instruments[0])
-        == cryptowatch.resources.instruments.InstrumentResource
+        == cryptowatch.resources.instruments.BaseResource
     )
     # This should raise an APIResourceNotFoundError Exception
     with pytest.raises(cryptowatch.errors.APIResourceNotFoundError):
@@ -86,7 +86,7 @@ def test_exchanges_endpoints():
     assert hasattr(exchanges, "exchanges")
     assert type(exchanges.exchanges) == type(list())
     assert (
-        type(exchanges.exchanges[0]) == cryptowatch.resources.exchanges.ExchangeResource
+        type(exchanges.exchanges[0]) == cryptowatch.resources.base.BaseResource
     )
     # This should raise an APIResourceNotFoundError Exception
     with pytest.raises(cryptowatch.errors.APIResourceNotFoundError):
