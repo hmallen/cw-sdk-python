@@ -3,7 +3,7 @@ import re
 from marshmallow import EXCLUDE, Schema
 
 
-CAMEL_CASE_RE = re.compile(r'(?<!^)(?=[A-Z])')
+CAMEL_CASE_RE = re.compile(r"(?<!^)(?=[A-Z])")
 
 
 class BaseSchema(Schema):

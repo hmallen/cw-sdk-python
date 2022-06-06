@@ -85,9 +85,7 @@ def test_exchanges_endpoints():
     exchanges = cryptowatch.exchanges.list()
     assert hasattr(exchanges, "exchanges")
     assert type(exchanges.exchanges) == type(list())
-    assert (
-        type(exchanges.exchanges[0]) == cryptowatch.resources.base.BaseResource
-    )
+    assert type(exchanges.exchanges[0]) == cryptowatch.resources.base.BaseResource
     # This should raise an APIResourceNotFoundError Exception
     with pytest.raises(cryptowatch.errors.APIResourceNotFoundError):
         cryptowatch.exchanges.get("exchangethatdoesntexists")
