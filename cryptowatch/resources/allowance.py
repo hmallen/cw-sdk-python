@@ -6,9 +6,9 @@ from cryptowatch.resources.base import BaseSchema
 class AllowanceSchema(BaseSchema):
     cost = fields.Integer()
     remaining = fields.Integer()
-    remainingPaid = fields.Integer(missing=0)
-    upgrade = fields.Str(missing="")
-    account = fields.Str(missing="")
+    remainingPaid = fields.Integer(load_default=0)
+    upgrade = fields.Str(load_default="")
+    account = fields.Str(load_default="")
 
     @post_load
     def make_allowance(self, data, **kwargs):

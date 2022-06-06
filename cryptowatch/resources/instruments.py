@@ -79,7 +79,7 @@ class InstrumentSchema(BaseSchema):
 
 class InstrumentAPIResponseSchema(BaseSchema):
     result = fields.Nested(InstrumentSchema)
-    allowance = fields.Nested(AllowanceSchema, partial=("account",), missing=None)
+    allowance = fields.Nested(AllowanceSchema, partial=("account",), load_default=None)
 
     @post_load
     def make_instrument_api_resp(self, data, **kwargs):
@@ -88,7 +88,7 @@ class InstrumentAPIResponseSchema(BaseSchema):
 
 class InstrumentListAPIResponseSchema(BaseSchema):
     result = fields.Nested(InstrumentSchema, many=True)
-    allowance = fields.Nested(AllowanceSchema, partial=("account",), missing=None)
+    allowance = fields.Nested(AllowanceSchema, partial=("account",), load_default=None)
 
     @post_load
     def make_instrument_list_api_resp(self, data, **kwargs):

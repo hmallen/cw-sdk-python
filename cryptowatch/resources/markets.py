@@ -183,7 +183,7 @@ class LiquidityResource:
 
 class MarketLiquidityAPIResponseSchema(BaseSchema):
     result = fields.Nested(LiquiditySchema)
-    allowance = fields.Nested(AllowanceSchema, partial=("account",), missing=None)
+    allowance = fields.Nested(AllowanceSchema, partial=("account",), load_default=None)
 
     @post_load
     def make_market_liquidity_api_resp(self, data, **kwargs):
@@ -207,7 +207,7 @@ class OrdeBookSchema(BaseSchema):
 
 class MarketOrderBookAPIResponseSchema(BaseSchema):
     result = fields.Nested(OrdeBookSchema)
-    allowance = fields.Nested(AllowanceSchema, partial=("account",), missing=None)
+    allowance = fields.Nested(AllowanceSchema, partial=("account",), load_default=None)
 
     @post_load
     def make_market_order_book_api_resp(self, data, **kwargs):
@@ -227,7 +227,7 @@ class MarketOrderBookAPIResponse:
 
 class MarketTradesAPIResponseSchema(BaseSchema):
     result = fields.List(fields.List(fields.Float))
-    allowance = fields.Nested(AllowanceSchema, partial=("account",), missing=None)
+    allowance = fields.Nested(AllowanceSchema, partial=("account",), load_default=None)
 
     @post_load
     def make_market_trade_api_resp(self, data, **kwargs):
@@ -246,7 +246,7 @@ class MarketTradesAPIResponse:
 
 class MarketOHLCAPIResponseSchema(BaseSchema):
     result = fields.Dict(fields.Str(), fields.List(fields.List(fields.Float)))
-    allowance = fields.Nested(AllowanceSchema, partial=("account",), missing=None)
+    allowance = fields.Nested(AllowanceSchema, partial=("account",), load_default=None)
 
     @post_load
     def make_market_ohlc_api_resp(self, data, **kwargs):
@@ -301,7 +301,7 @@ class MarketOHLCAPIResponse:
 
 class MarketSummaryAPIResponseSchema(BaseSchema):
     result = fields.Nested(MarketSummarySchema)
-    allowance = fields.Nested(AllowanceSchema, partial=("account",), missing=None)
+    allowance = fields.Nested(AllowanceSchema, partial=("account",), load_default=None)
 
     @post_load
     def make_market_summary_api_resp(self, data, **kwargs):
@@ -330,7 +330,7 @@ class MarketAPIResponse:
 
 class MarketAPIResponseSchema(BaseSchema):
     result = fields.Nested(MarketSchema)
-    allowance = fields.Nested(AllowanceSchema, partial=("account",), missing=None)
+    allowance = fields.Nested(AllowanceSchema, partial=("account",), load_default=None)
 
     @post_load
     def make_market_api_resp(self, data, **kwargs):
@@ -339,7 +339,7 @@ class MarketAPIResponseSchema(BaseSchema):
 
 class MarketListAPIResponseSchema(BaseSchema):
     result = fields.Nested(MarketSchema, many=True)
-    allowance = fields.Nested(AllowanceSchema, partial=("account",), missing=None)
+    allowance = fields.Nested(AllowanceSchema, partial=("account",), load_default=None)
 
     @post_load
     def make_market_api_resp(self, data, **kwargs):
