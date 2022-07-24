@@ -17,7 +17,10 @@ def read_config():
             config = yaml.safe_load(config_file)
             # A config_file empty or with all lines commented out will return None
             if not config:
-                log("Your configuration file at {} is empty".format(filepath), is_debug=True)
+                log(
+                    "Your configuration file at {} is empty".format(filepath),
+                    is_debug=True,
+                )
             else:
                 # Look for the (public) API Key
                 if not config.get("apikey") and not config.get("api_key"):

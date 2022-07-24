@@ -93,7 +93,10 @@ class Requestor:
             if resp.status_code == 404:
                 msg = resp.json().get("error", "No such resource at {}".format(url))
                 raise cryptowatch.errors.APIResourceNotFoundError(
-                    msg, resp.text, resp.status_code, resp.request.headers,
+                    msg,
+                    resp.text,
+                    resp.status_code,
+                    resp.request.headers,
                 )
             # Allowance exceeded
             elif resp.status_code == 429:
@@ -103,7 +106,10 @@ class Requestor:
                     "Upgrade for a higher allowance at https://cryptowat.ch/pricing",
                 )
                 raise cryptowatch.errors.APIRateLimitError(
-                    msg, resp.text, resp.status_code, resp.request.headers,
+                    msg,
+                    resp.text,
+                    resp.status_code,
+                    resp.request.headers,
                 )
             # Any HTTP 4XX Error
             elif str(resp.status_code).startswith("4"):
@@ -111,7 +117,10 @@ class Requestor:
                     "error", "Your request failed. Please try again in a moment."
                 )
                 raise cryptowatch.errors.APIRequestError(
-                    msg, resp.text, resp.status_code, resp.request.headers,
+                    msg,
+                    resp.text,
+                    resp.status_code,
+                    resp.request.headers,
                 )
             # Any HTTP 5XX Error
             elif str(resp.status_code).startswith("5"):
@@ -120,7 +129,10 @@ class Requestor:
                     "The Cryptowatch API is having some issues. Please try again in a moment.",
                 )
                 raise cryptowatch.errors.APIServerError(
-                    msg, resp.text, resp.status_code, resp.request.headers,
+                    msg,
+                    resp.text,
+                    resp.status_code,
+                    resp.request.headers,
                 )
             # Any other HTTP Error
             else:

@@ -1,0 +1,1 @@
+{"buildTargets":["autoformat","lint","proto","test","test-http-real"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}

@@ -38,9 +38,14 @@ setup(
         "urllib3>=1.26.5",
         "websocket-client>=1.0.0",
         "protobuf>=3.11.3",
+        "rel==0.4.7",
     ],
     packages=find_packages(exclude=("tests", "examples")),
-    entry_points={"console_scripts": ["cryptowatch=cryptowatch.__main__:main",]},
+    entry_points={
+        "console_scripts": [
+            "cryptowatch=cryptowatch.__main__:main",
+        ]
+    },
     python_requires=">=3.7",
     project_urls={
         "Bug Tracker": "https://github.com/cryptowatch/cw-sdk-python/issues",

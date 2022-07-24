@@ -11,7 +11,6 @@ from cryptowatch.utils import forge_stream_subscription_payload
 from cryptowatch.stream.proto.public.stream import stream_pb2
 from cryptowatch.stream.proto.public.client import client_pb2
 
-
 subscriptions = []
 
 _ws = None
@@ -82,7 +81,7 @@ def on_orderbook_snapshot_update(orderbook_snapshot_update):
     pass
 
 
-def connect(ping_timeout=20, ping_interval=70):
+def connect(ping_timeout=20, ping_interval=70, enable_trace=False, use_rel=False):
     if cryptowatch.api_key:
         DSN = "{}?apikey={}&format=binary".format(
             cryptowatch.ws_endpoint, cryptowatch.api_key
@@ -93,7 +92,15 @@ def connect(ping_timeout=20, ping_interval=70):
             "You can create one at https://cryptowat.ch/account/api-access"
         )
     log("DSN used: {}".format(DSN), is_debug=True)
-    websocket.enableTrace(False)
+    # websocket.enableTrace(False)
+    websocket.enableTrace(enable_trace)
+
+    keyword_args = {"ping_timeout": ping_timeout, "ping_interval": ping_interval}
+    if use_rel:
+        import rel
+
+        keyword_args["dispatcher"] = rel
+
     global _ws
     _ws = websocket.WebSocketApp(
         DSN,
@@ -104,10 +111,15 @@ def connect(ping_timeout=20, ping_interval=70):
     )
     wst = threading.Thread(
         target=_ws.run_forever,
-        kwargs={"ping_timeout": ping_timeout, "ping_interval": ping_interval},
+        # kwargs={"ping_timeout": ping_timeout, "ping_interval": ping_interval},
+        kwargs=keyword_args,
     )
     wst.daemon = False
     wst.start()
+    if use_rel:
+        rel.signal(2, rel.abort)  # Keyboard Interrupt
+        rel.dispatch()
+
     log(
         "Ping timeout used: {}. Ping interval used: {}".format(
             ping_timeout, ping_interval
